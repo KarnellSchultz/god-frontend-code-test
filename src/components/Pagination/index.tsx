@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Icon } from "vcc-ui/lib/components/icon";
+
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { Dot, DotContainer, DotHitBox } from "./dots";
 
@@ -31,8 +32,6 @@ type PaginationProps = {
 export const Pagination = ({
   totalPages,
   activePage,
-  count,
-  carsPerPage,
   prevPage,
   nextPage,
   setActivePage,

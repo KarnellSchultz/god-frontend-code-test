@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Link from "next/link";
 import styled from "styled-components";
 import { StyleProvider, ThemePicker, View, Logo } from "vcc-ui";
@@ -5,7 +6,7 @@ import { StyleProvider, ThemePicker, View, Logo } from "vcc-ui";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center ;
+  align-items: center;
 `;
 
 type Props = { children: React.ReactNode };

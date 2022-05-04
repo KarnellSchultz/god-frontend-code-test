@@ -6,7 +6,6 @@ import { BodyTypeFilterKeys, CarsPerPage, CarType } from "../src/types";
 import { Pagination } from "../src/components/pagination";
 import { CarCard } from "../src/components/carCard";
 import { Nav } from "../src/components/nav";
-import { getCars } from "./api/cars";
 import { useWindowSize } from "../src/hooks/useWindowSize";
 
 const CarsContainer = styled.div<{ isMobile: boolean }>`
@@ -88,12 +87,5 @@ const App = () => {
   );
 };
 
-export async function getServerSideProps() {
-  const cars = await getCars();
-  return {
-    props: {
-      cars,
-    },
-  };
-}
+
 export default App;
