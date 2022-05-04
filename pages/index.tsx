@@ -1,80 +1,89 @@
-import React, { useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
+import React, { useEffect, useMemo, useState } from "react";
+import styled, { css } from "styled-components";
 
-import styled from "styled-components";
-
-import { Spacer, Text, Link as VLink, Icon } from "vcc-ui";
-
-import { CarType } from "../src/types";
-import { getCars } from "./api/cars";
 import { Layout } from "../src/components/layout";
-import { ArrowButtons } from "../src/components/ArrowButtons";
+import { BodyTypeFilterKeys, CarsPerPage, CarType } from "../src/types";
+import { Pagination } from "../src/components/pagination";
+import { CarCard } from "../src/components/carCard";
+import { Nav } from "../src/components/nav";
+import { getCars } from "./api/cars";
+import { useWindowSize } from "../src/hooks/useWindowSize";
 
-const CarsContainer = styled.div`
+const CarsContainer = styled.div<{ isMobile: boolean }>`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-`;
-
-const CarCard = styled.div`
-  margin: 0 1rem;
-`;
-
-const LinkContainer = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-`;
-
-const CardHeading = styled.div`
-  padding: 0px;
-  paddingbottom: "1rem";
+  grid-template-columns: repeat(4, 1fr);
+  ${({ isMobile }) =>
+    isMobile &&
+    css`
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    `}
 `;
 
 const App = () => {
   const [cars, setCars] = React.useState([]);
+  const [activePage, setActivePage] = useState(1);
+  const [filterKey, setFilterKey] =
+    useState<keyof typeof BodyTypeFilterKeys>("ALL");
+
   useEffect(() => {
     fetch("/api/cars/")
       .then((res) => res.json())
       .then((data) => setCars(data));
   }, []);
 
+  const { isMobile } = useWindowSize();
 
+  useEffect(() => {
+    setActivePage(1);
+  }, [isMobile, filterKey]);
+
+  const filteredCars = useMemo(
+    () =>
+      filterKey !== BodyTypeFilterKeys.ALL
+        ? cars.filter(
+            (car: CarType) => car.bodyType.toUpperCase() === filterKey
+          )
+        : cars,
+    [cars, filterKey]
+  );
+
+  const carsPerPage = isMobile ? CarsPerPage.Mobile : CarsPerPage.Desktop;
+  const count = filteredCars.length;
+  const totalPages = Math.ceil(count / carsPerPage);
+
+  const calculatedCars = useMemo(
+    () =>
+      filteredCars.slice(
+        (activePage - 1) * carsPerPage,
+        activePage * carsPerPage
+      ),
+    [activePage, carsPerPage, filteredCars]
+  );
+
+  const nextPage = () => setActivePage((prev) => prev + 1);
+  const prevPage = () => setActivePage((prev) => prev - 1);
 
   return (
     <Layout>
-      <CarsContainer>
-        {cars?.map((car: CarType) => (
-          <CarCard key={car.id}>
-            <CardHeading>
-              <Text variant="columbus" subStyle={"inline-link"}>
-                {car.bodyType}
-              </Text>
-              <div style={{ display: "flex" }}>
-                <Text variant={"amundsen"} subStyle="emphasis">
-                  {car.modelName}
-                </Text>
-                <Text subStyle={"inline-link"}>{car.modelType}</Text>
-              </div>
-            </CardHeading>
-            <Image
-              src={car.imageUrl}
-              alt="cool car stuff"
-              width={256}
-              height={192}
-            />
-            <LinkContainer>
-              <Link href={`/learn/${car.id}`} passHref>
-                <VLink arrow="right">Learn</VLink>
-              </Link>
-              <Link href={`/shop/${car.id}`} passHref>
-                <VLink arrow="right">Shop</VLink>
-              </Link>
-            </LinkContainer>
-          </CarCard>
+      <Nav setFilterKey={setFilterKey} filterKey={filterKey} />
+      <CarsContainer isMobile={isMobile}>
+        {calculatedCars?.map((car: CarType) => (
+          <CarCard key={car.id} car={car} />
         ))}
       </CarsContainer>
-
-      <ArrowButtons />
+      <Pagination
+        totalPages={totalPages}
+        activePage={activePage}
+        count={count}
+        carsPerPage={carsPerPage}
+        nextPage={nextPage}
+        prevPage={prevPage}
+        setActivePage={setActivePage}
+      />
     </Layout>
   );
 };
@@ -87,5 +96,4 @@ export async function getServerSideProps() {
     },
   };
 }
-
 export default App;

@@ -5,3 +5,15 @@ export type CarType = {
   modelType: string;
   imageUrl: string;
 };
+
+export const BodyTypeFilterKeys = {
+  SUV: "SUV",
+  ESTATE: "SUV",
+  SEDAN: "SEDAN",
+  ALL: "ALL",
+};
+
+export enum CarsPerPage {
+  Mobile = 1,
+  Desktop = 4,
+}
