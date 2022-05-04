@@ -44,3 +44,13 @@ Two extra SVG icons are also provided by our designer which are stored under `do
 
 - If you use our design system component library, [VCC-UI](https://vcc-ui.vercel.app/)
 - If you add a filter bar on the top to filter cars by `bodyType`
+
+## To-dos
+
+- [x] The project is bootstraped using [Next.js](https://nextjs.org/).
+- [x] Browser support is modern ever-green browsers.
+- [x] Implement this design using React and Typescript.
+- [x] Accessibility is important.
+- [x] check code structure
+- [x] use vcc
+- [x] feature filter bar 
