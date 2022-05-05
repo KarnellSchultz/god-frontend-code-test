@@ -4,9 +4,11 @@ export interface Size {
   width: number | undefined;
   height: number | undefined;
 }
+
 type UseWindowSizeReturnType = { windowSize: Size; isMobile: boolean };
+type UseWindowSize = (mobileBreakpoint?: number) => UseWindowSizeReturnType;
 // Hook
-export function useWindowSize(): UseWindowSizeReturnType {
+export const useWindowSize: UseWindowSize = (mobileBreakpoint = 650) => {
   // Initialize state with undefined width/height so server and client renders match
   // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
   const [windowSize, setWindowSize] = useState<Size>({
@@ -28,9 +30,9 @@ export function useWindowSize(): UseWindowSizeReturnType {
     handleResize();
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleResize);
-  }, []); // Empty array ensures that effect is only run on mount
-  const mobileBreakpoint = 601;
+  }, []);
+
   const widownWidth = windowSize?.width ?? 1000;
   const isMobile = widownWidth <= mobileBreakpoint ? true : false;
   return { windowSize, isMobile };
-}
+};
