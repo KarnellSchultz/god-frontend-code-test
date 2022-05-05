@@ -1,26 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
-import styled, { css } from "styled-components";
 
 import { Layout } from "../src/components/layout";
 import { BodyTypeFilterKeys, CarsPerPage, CarType } from "../src/types";
 import { Pagination } from "../src/components/pagination";
-import { CarCard } from "../src/components/carCard";
 import { Nav } from "../src/components/nav";
-import { useWindowSize } from "../src/hooks/useWindowSize";
+import { CarsContainer } from "../src/components/cars-container";
 
-const CarsContainer = styled.div<{ isMobile: boolean }>`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  ${({ isMobile }) =>
-    isMobile &&
-    css`
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    `}
-`;
+import { useWindowSize } from "../src/hooks/useWindowSize";
 
 const App = () => {
   const [cars, setCars] = React.useState([]);
@@ -69,11 +55,7 @@ const App = () => {
   return (
     <Layout>
       <Nav setFilterKey={setFilterKey} filterKey={filterKey} />
-      <CarsContainer isMobile={isMobile}>
-        {calculatedCars?.map((car: CarType) => (
-          <CarCard key={car.id} car={car} />
-        ))}
-      </CarsContainer>
+      <CarsContainer cars={calculatedCars} />
       <Pagination
         totalPages={totalPages}
         activePage={activePage}
@@ -86,6 +68,5 @@ const App = () => {
     </Layout>
   );
 };
-
 
 export default App;

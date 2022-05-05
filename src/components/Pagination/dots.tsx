@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const DotHitBox = styled.button`
   background-color: white;
@@ -15,7 +15,17 @@ export const DotContainer = styled.div`
   justify-content: center;
 `;
 
-export const Dot = styled.div<{ active: boolean }>`
+type DotType = { active: boolean };
+
+const activeDotMixin = ({ active }: DotType) =>
+  active &&
+  css`
+    background-color: black;
+    width: 7px;
+    height: 7px;
+  `;
+
+export const Dot = styled.div<DotType>`
   content: "";
   width: 5px;
   height: 5px;
@@ -25,10 +35,7 @@ export const Dot = styled.div<{ active: boolean }>`
 
   transform: translate(-50%, -50%);
   transition: all 200ms;
-  background-color: ${({ active }) => (active ? "black" : "lightgrey")};
-  ${({ active }) =>
-    active &&
-    `
-  width: 7px;
-  height: 7px;`}
+  background-color: lightgrey;
+
+  ${activeDotMixin}
 `;

@@ -1,15 +1,32 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import styled from "styled-components";
 
 import { Text, Link as VLink } from "vcc-ui";
+
 import { CarType } from "../../types";
-import {
-  CardContainer,
-  CardHeading,
-  CarTextDetials,
-  LinkContainer,
-} from "./styles";
+
+export const LinkContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+`;
+
+export const CardHeading = styled.div`
+  padding: 0px;
+  padding-bottom: 1rem;
+`;
+
+export const CardContainer = styled.div`
+  margin: 2rem 1rem;
+`;
+
+export const CarTextDetials = styled.div`
+  display: flex;
+  p {
+    padding-right: 0.3rem;
+  }
+`;
 
 type CarCardProps = { car: CarType };
 export const CarCard = ({ car }: CarCardProps) => {

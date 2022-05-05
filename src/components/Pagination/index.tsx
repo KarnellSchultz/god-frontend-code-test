@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+
 import { Icon } from "vcc-ui/lib/components/icon";
+import { Dot, DotContainer, DotHitBox } from "./dots";
 
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { Dot, DotContainer, DotHitBox } from "./dots";
 
 const ArrowButton = styled.button`
   background-color: white;
