@@ -8,17 +8,27 @@ import { CarsContainer } from "../src/components/cars-container";
 
 import { useWindowSize } from "../src/hooks/useWindowSize";
 
-const App = () => {
-  const [cars, setCars] = React.useState([]);
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+import { GetServerSideProps } from 'next'
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+
+const response = await fetch("http://localhost:3000/" + "/api/cars/")
+const carData = await response.json()
+      
+  return {
+    props: {
+    carData      
+    }
+  }
+}
+
+const App = ({carData}: any) => {
+  const [cars] = React.useState(carData);
   const [activePage, setActivePage] = useState(1);
   const [filterKey, setFilterKey] =
     useState<keyof typeof BodyTypeFilterKeys>("ALL");
-
-  useEffect(() => {
-    fetch("/api/cars/")
-      .then((res) => res.json())
-      .then((data) => setCars(data));
-  }, []);
 
   const { isMobile } = useWindowSize();
 
