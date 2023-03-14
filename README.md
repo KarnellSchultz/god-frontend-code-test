@@ -1,3 +1,20 @@
+## [live app](https://volvo-frontend-code-test.vercel.app/)
+
+## Notes on the refactor
+
+I approached this refactor as a way to improve the code structure and readability of the code. I attempted to abstract away the more complex parts or the components that could be reused. Below are a list of things I had in mind when working on this refactor. 
+
+- I wanted to make the code more readable and easier to understand.
+- Making the types more specific and easier to understand.
+- Reducing the amount of folders and files where possible.
+- Removing magic numbers and strings.
+- Adding linting and formatting to the project.
+- Simplifying data fetching and state management.
+- Removing 'over-optimization' where possible, such as using `useCallback` and `useMemo` where it was not necessary.
+- Code styles in general.
+
+
+
 # Volvo Cars (Global Online Digital)
 
 ## Front-end coding test (React)
@@ -44,6 +61,7 @@ Two extra SVG icons are also provided by our designer which are stored under `do
 
 - If you use our design system component library, [VCC-UI](https://vcc-ui.vercel.app/)
 - If you add a filter bar on the top to filter cars by `bodyType`
+
 
 ## To-dos
 
