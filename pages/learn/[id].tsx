@@ -1,41 +1,40 @@
-import Image from 'next/image'
-import { Link as VLink, Logo, Spacer, Text } from 'vcc-ui'
-import Link from 'next/link'
-
 import { getCars } from '../api/cars'
-
-import type { CarType } from '../../src/types'
 import { Layout } from '../../src/components/layout'
+import { GetStaticPaths, GetStaticProps } from 'next/types'
+import {
+    CarDetails,
+    CarDetailsProps,
+} from '../../src/components/car-details/car-details'
 
-export async function getServerSideProps(props: { params: { id: string } }) {
-    const { params } = props
-    const cars = await getCars()
-    const car = cars.find((c) => c.id === params.id)
+export const getStaticProps: GetStaticProps = async (ctx) => {
+    const { id } = ctx.params as { id: string }
+    const carData = await getCars()
+    const car = carData.find((c) => c.id === id)
+
+    if (!car) return { notFound: true }
+    
     return {
         props: {
-            ...car,
+            id: car.id,
+            imageUrl: car.imageUrl,
         },
     }
 }
 
-export default function CarDetails({ id, imageUrl }: CarType) {
+export const getStaticPaths: GetStaticPaths = async () => {
+    const carData = await getCars()
+    return {
+        paths: carData.map((car) => ({
+            params: { id: car.id },
+        })),
+        fallback: true,
+    }
+}
+
+export default function LearnPage({ id, imageUrl }: CarDetailsProps) {
     return (
         <Layout>
-            <div>
-                <Text>Learn - {id}</Text>
-                <Image
-                    src={`${imageUrl}`}
-                    alt="cool car stuff"
-                    width={640}
-                    height={480}
-                />
-            </div>
-            <Spacer size={4} />
-            <Link href={'/'} passHref>
-                <a>
-                    <Logo type="spreadmark" height={12} />
-                </a>
-            </Link>
+            <CarDetails id={id} imageUrl={imageUrl} />
         </Layout>
     )
 }
