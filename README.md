@@ -1,4 +1,4 @@
-## [live app](https://volvo-frontend-code-test.vercel.app/)
+## [live app](https://volvo-code-test.karnellschultz.com/)
 
 ## Notes on the refactor
 
