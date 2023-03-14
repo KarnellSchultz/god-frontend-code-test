@@ -4,9 +4,10 @@ import { CarType } from './types'
 // API calls
 
 export const ORIGIN_URL =
-    process.env.NODE_ENV === 'development'
-        ? process.env.localhost
-        : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    process.env.NEXT_PUBLIC_ORIGIN_URL ??
+    (process.env.NEXT_PUBLIC_VERCEL_URL
+        ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+        : 'http://localhost:3000')
 
 const routes = {
     cars: ORIGIN_URL + '/api/cars',
