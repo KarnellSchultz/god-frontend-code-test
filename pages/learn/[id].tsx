@@ -1,10 +1,10 @@
 import { Layout } from '../../src/components/layout'
 import { GetStaticPaths, GetStaticProps } from 'next/types'
+import { getCars } from '../../src/utils'
 import {
     CarDetails,
     CarDetailsProps,
 } from '../../src/components/car-details/car-details'
-import { getCars } from '../../src/utils'
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
     const { id } = ctx.params as { id: string }

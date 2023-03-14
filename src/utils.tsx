@@ -3,17 +3,18 @@ import { CarType } from './types'
 
 // API calls
 
-const baseUrl = 'http://localhost:3000' // Would normally be in a .env file or similar
+export const BASE_URL = process.env.NEXT_PUBLIC_VERCEL_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    : 'http://localhost:3000'
 
 const routes = {
-    cars: new URL('/api/cars', baseUrl),
+    cars: new URL('/api/cars', BASE_URL),
 } as const
 
 export const getCars = async () => {
     const response = await fetch(routes.cars)
     return (await response.json()) as CarType[]
 }
-
 
 // Hooks
 export interface Size {
