@@ -1,4 +1,21 @@
 import { useState, useEffect } from 'react'
+import { CarType } from './types'
+
+// API calls
+
+const baseUrl = 'http://localhost:3000' // Would normally be in a .env file or similar
+
+const routes = {
+    cars: new URL('/api/cars', baseUrl),
+} as const
+
+export const getCars = async () => {
+    const response = await fetch(routes.cars)
+    return (await response.json()) as CarType[]
+}
+
+
+// Hooks
 export interface Size {
     width: number | undefined
     height: number | undefined

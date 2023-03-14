@@ -5,12 +5,10 @@ import { BodyTypes, BodyTypeKeysType, CarsPerPage, CarType } from '../src/types'
 import { Nav } from '../src/components/nav'
 import { CarsContainer } from '../src/components/cars-container'
 
-import { useActivePage, useWindowSize } from '../src/hooks'
+import { getCars, useActivePage, useWindowSize } from '../src/utils'
 
 import { GetStaticProps } from 'next'
 import { Pagination } from '../src/components/Pagination'
-import { getCars } from './api/cars'
-
 
 export const getStaticProps: GetStaticProps = async () => {
     const carData = await getCars()
