@@ -3,15 +3,13 @@ import { CarType } from './types'
 
 // API calls
 
-export const ORIGIN_URL =
-    process.env.NEXT_PUBLIC_ORIGIN_URL ??
-    (process.env.NEXT_PUBLIC_VERCEL_URL
-        ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-        : 'http://localhost:3000')
+
+const ORIGIN_URL = process.env.NEXT_PUBLIC_VERCEL_URL
 
 const routes = {
     cars: ORIGIN_URL + '/api/cars',
 } as const
+console.log(routes)
 
 export const getCars = async () => {
     const response = await fetch(routes.cars)
