@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { CarType } from './types'
-import cars from '../public/cars.json'
+import cars from '../public/api/cars.json'
 
 // Mocked API calls
 
