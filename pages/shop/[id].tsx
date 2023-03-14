@@ -1,24 +1,38 @@
 import Image from 'next/image'
 import { Logo, Spacer, Text } from 'vcc-ui'
-
 import { getCars } from '../api/cars'
-
-import type { CarType } from '../../src/types'
 import { Layout } from '../../src/components/layout'
 import Link from 'next/link'
+import { GetStaticPaths, GetStaticProps } from 'next/types'
 
-export async function getServerSideProps(props: { params: { id: string } }) {
-    const { params } = props
-    const cars = await getCars()
-    const car = cars.find((c) => c.id === params.id)
+export const getStaticProps: GetStaticProps = async (ctx) => {
+    const { id } = ctx.params as { id: string }
+    const carData = await getCars()
+    const car = carData.find((c) => c.id === id)
     return {
         props: {
-            ...car,
+            id: car?.id,
+            imageUrl: car?.imageUrl,
         },
     }
 }
 
-export default function CarDetails({ id, imageUrl }: CarType) {
+export const getStaticPaths: GetStaticPaths = async () => {
+    const carData = await getCars()
+    return {
+        paths: carData.map((car) => ({
+            params: { id: car.id },
+        })),
+        fallback: true,
+    }
+}
+
+type Props = {
+    id: string
+    imageUrl: string
+}
+
+export default function CarDetails({ id, imageUrl }: Props) {
     return (
         <Layout>
             <div>

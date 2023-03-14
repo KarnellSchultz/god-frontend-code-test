@@ -9,16 +9,11 @@ import { useActivePage, useWindowSize } from '../src/hooks'
 
 import { GetStaticProps } from 'next'
 import { Pagination } from '../src/components/Pagination'
+import { getCars } from './api/cars'
 
-// Would expect this to come from and .env file
-const BASE_URL = 'http://localhost:3000'
-const apiRoutes = {
-    cars: '/api/cars',
-}
 
 export const getStaticProps: GetStaticProps = async () => {
-    const response = await fetch(new URL(apiRoutes.cars, BASE_URL))
-    const carData = (await response.json()) as CarType[]
+    const carData = await getCars()
     return {
         props: {
             carData,
