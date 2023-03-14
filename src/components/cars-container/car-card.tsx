@@ -1,4 +1,3 @@
-import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import styled from 'styled-components'
@@ -45,7 +44,7 @@ export const CarCard = ({ car }: CarCardProps) => {
             </CardHeading>
             <Image
                 src={car.imageUrl}
-                alt="cool car stuff"
+                alt={`Car ${car.id}`}
                 width={256}
                 height={192}
             />

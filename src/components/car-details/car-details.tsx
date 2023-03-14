@@ -13,7 +13,7 @@ export const CarDetails = ({ id, imageUrl }: CarDetailsProps) => (
             <Text>Shop - {id}</Text>
             <Image
                 src={`${imageUrl}`}
-                alt="cool car stuff"
+                alt={`Car ${id}`}
                 width={640}
                 height={480}
             />
