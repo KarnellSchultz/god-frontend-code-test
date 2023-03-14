@@ -1,38 +1,38 @@
 import { useState, useEffect } from "react";
-// Define general type for useWindowSize hook, which includes width and height
 export interface Size {
   width: number | undefined;
   height: number | undefined;
 }
 
-type UseWindowSizeReturnType = { windowSize: Size; isMobile: boolean };
-type UseWindowSize = (mobileBreakpoint?: number) => UseWindowSizeReturnType;
-// Hook
-export const useWindowSize: UseWindowSize = (mobileBreakpoint = 650) => {
-  // Initialize state with undefined width/height so server and client renders match
-  // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
+const MOBILE_BREAKPOINT = 768;
+
+export const useWindowSize = (mobileBreakpoint = MOBILE_BREAKPOINT) => {
   const [windowSize, setWindowSize] = useState<Size>({
     width: undefined,
     height: undefined,
   });
   useEffect(() => {
-    // Handler to call on window resize
     function handleResize() {
-      // Set window width/height to state
       setWindowSize({
         width: window.innerWidth,
         height: window.innerHeight,
       });
     }
-    // Add event listener
     window.addEventListener("resize", handleResize);
-    // Call handler right away so state gets updated with initial window size
     handleResize();
-    // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const widownWidth = windowSize?.width ?? 1000;
   const isMobile = widownWidth <= mobileBreakpoint ? true : false;
   return { windowSize, isMobile };
+};
+
+export const useActivePage = (isMobile: boolean, filterKey: string) => {
+  const initPage = 1;
+  const [activePage, setActivePage] = useState(initPage);
+  useEffect(() => {
+    setActivePage(initPage);
+  }, [isMobile, filterKey]);
+  return [activePage, setActivePage] as const;
 };

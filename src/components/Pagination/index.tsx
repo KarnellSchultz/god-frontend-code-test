@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Icon } from "vcc-ui/lib/components/icon";
 import { Dot, DotContainer, DotHitBox } from "./dots";
 
-import { useWindowSize } from "../../hooks/useWindowSize";
+import { useWindowSize } from "../../hooks";
 
 const ArrowButton = styled.button`
   background-color: white;

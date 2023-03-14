@@ -1,10 +1,9 @@
-import React from "react";
 import styled, { css } from "styled-components";
 
 import { CarType } from "../../types";
 import { CarCard } from "./car-card";
 
-import { useWindowSize } from "../../hooks/useWindowSize";
+import { useWindowSize } from "../../hooks";
 
 const Container = styled.div<{ isMobile: boolean }>`
   display: grid;

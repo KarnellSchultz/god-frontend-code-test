@@ -6,14 +6,16 @@ export type CarType = {
   imageUrl: string;
 };
 
-export const BodyTypeFilterKeys = {
-  SUV: "SUV",
-  ESTATE: "SUV",
+export const BodyTypes = {
+  ESTATE: "ESTATE",
   SEDAN: "SEDAN",
+  SUV: "SUV",
   ALL: "ALL",
-};
+} as const;
 
-export enum CarsPerPage {
-  Mobile = 1,
-  Desktop = 4,
-}
+export type BodyTypeKeysType = typeof BodyTypes[keyof typeof BodyTypes];
+
+export const CarsPerPage = {
+  Mobile: 1,
+  Desktop: 4,
+} as const;

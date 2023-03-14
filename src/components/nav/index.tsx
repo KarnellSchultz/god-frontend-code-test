@@ -1,47 +1,44 @@
-import React from "react";
 import { TabNav, TabNavItem } from "vcc-ui";
-import { BodyTypeFilterKeys } from "../../types";
+import { BodyTypeKeysType, BodyTypes } from "../../types";
 
 type NavProps = {
-  setFilterKey: React.Dispatch<
-    React.SetStateAction<"SUV" | "SEDAN" | "ALL" | "ESTATE">
-  >;
-  filterKey: keyof typeof BodyTypeFilterKeys;
+  handleClick: (key: BodyTypeKeysType) => void;
+  filterKey: BodyTypeKeysType;
 };
-export const Nav = ({ setFilterKey, filterKey }: NavProps) => {
+export const Nav = ({ handleClick, filterKey }: NavProps) => {
   return (
     <TabNav
       backButton={{
         text: "Volvo Cars",
         href: "/",
         clickHandler: () => {
-          setFilterKey("ALL");
+          handleClick(BodyTypes.ALL);
         },
       }}
     >
       <TabNavItem
-        isActive={filterKey === BodyTypeFilterKeys.ALL}
-        onClick={() => setFilterKey("ALL")}
+        isActive={filterKey === BodyTypes.ALL}
+        onClick={() => handleClick(BodyTypes.ALL)}
       >
         All
       </TabNavItem>
       <TabNavItem
-        isActive={filterKey === BodyTypeFilterKeys.ESTATE}
-        onClick={() => setFilterKey("ESTATE")}
+        isActive={filterKey === BodyTypes.SUV}
+        onClick={() => handleClick(BodyTypes.SUV)}
+      >
+        SUV
+      </TabNavItem>
+      <TabNavItem
+        isActive={filterKey === BodyTypes.ESTATE}
+        onClick={() => handleClick(BodyTypes.ESTATE)}
       >
         Estate
       </TabNavItem>
       <TabNavItem
-        isActive={filterKey === BodyTypeFilterKeys.SEDAN}
-        onClick={() => setFilterKey("SEDAN")}
+        isActive={filterKey === BodyTypes.SEDAN}
+        onClick={() => handleClick(BodyTypes.SEDAN)}
       >
         Sedan
-      </TabNavItem>
-      <TabNavItem
-        isActive={filterKey === BodyTypeFilterKeys.SUV}
-        onClick={() => setFilterKey("SUV")}
-      >
-        SUV
       </TabNavItem>
     </TabNav>
   );

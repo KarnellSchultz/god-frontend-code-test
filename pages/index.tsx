@@ -1,62 +1,63 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Layout } from "../src/components/layout";
-import { BodyTypeFilterKeys, CarsPerPage, CarType } from "../src/types";
-import { Pagination } from "../src/components/pagination";
+import {
+  BodyTypes,
+  BodyTypeKeysType,
+  CarsPerPage,
+  CarType,
+} from "../src/types";
 import { Nav } from "../src/components/nav";
 import { CarsContainer } from "../src/components/cars-container";
 
-import { useWindowSize } from "../src/hooks/useWindowSize";
+import { useActivePage, useWindowSize } from "../src/hooks";
 
-// You should use getServerSideProps when:
-// - Only if you need to pre-render a page whose data must be fetched at request time
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from "next";
+import { Pagination } from "../src/components/Pagination";
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+// Would expect this to come from and .env file
+const BASE_URL = "http://localhost:3000";
+const apiRoutes = {
+  cars: "/api/cars",
+};
 
-const response = await fetch("http://localhost:3000/" + "/api/cars/")
-const carData = await response.json()
-      
+export const getStaticProps: GetStaticProps = async () => {
+  const response = await fetch(new URL(apiRoutes.cars, BASE_URL));
+  const carData = (await response.json()) as CarType[];
   return {
     props: {
-    carData      
-    }
-  }
-}
+      carData,
+    },
+  };
+};
 
-const App = ({carData}: any) => {
-  const [cars] = React.useState(carData);
-  const [activePage, setActivePage] = useState(1);
-  const [filterKey, setFilterKey] =
-    useState<keyof typeof BodyTypeFilterKeys>("ALL");
+type Props = {
+  carData: CarType[];
+};
 
+const App = ({ carData }: Props) => {
   const { isMobile } = useWindowSize();
+  const [cars] = useState(carData);
+  const [filterKey, setFilterKey] = useState<BodyTypeKeysType>(BodyTypes.ALL);
 
-  useEffect(() => {
-    setActivePage(1);
-  }, [isMobile, filterKey]);
+  const handleFilterKeyChange = (key: BodyTypeKeysType) => {
+    setFilterKey(key);
+  };
 
-  const filteredCars = useMemo(
-    () =>
-      filterKey !== BodyTypeFilterKeys.ALL
-        ? cars.filter(
-            (car: CarType) => car.bodyType.toUpperCase() === filterKey
-          )
-        : cars,
-    [cars, filterKey]
-  );
+  const [activePage, setActivePage] = useActivePage(isMobile, filterKey);
+
+  const filteredCars =
+    filterKey !== BodyTypes.ALL
+      ? cars.filter((car: CarType) => car.bodyType.toUpperCase() === filterKey)
+      : cars;
 
   const carsPerPage = isMobile ? CarsPerPage.Mobile : CarsPerPage.Desktop;
   const count = filteredCars.length;
   const totalPages = Math.ceil(count / carsPerPage);
 
-  const calculatedCars = useMemo(
-    () =>
-      filteredCars.slice(
-        (activePage - 1) * carsPerPage,
-        activePage * carsPerPage
-      ),
-    [activePage, carsPerPage, filteredCars]
+  const calculatedCars = filteredCars.slice(
+    (activePage - 1) * carsPerPage,
+    activePage * carsPerPage
   );
 
   const nextPage = () => setActivePage((prev) => prev + 1);
@@ -64,7 +65,7 @@ const App = ({carData}: any) => {
 
   return (
     <Layout>
-      <Nav setFilterKey={setFilterKey} filterKey={filterKey} />
+      <Nav handleClick={handleFilterKeyChange} filterKey={filterKey} />
       <CarsContainer cars={calculatedCars} />
       <Pagination
         totalPages={totalPages}
