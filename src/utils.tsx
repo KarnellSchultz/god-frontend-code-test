@@ -1,19 +1,11 @@
 import { useState, useEffect } from 'react'
 import { CarType } from './types'
+import cars from '../public/cars.json'
 
-// API calls
-
-
-const ORIGIN_URL = process.env.NEXT_PUBLIC_VERCEL_URL
-
-const routes = {
-    cars: ORIGIN_URL + '/api/cars',
-} as const
-console.log(routes)
+// Mocked API calls
 
 export const getCars = async () => {
-    const response = await fetch(routes.cars)
-    return (await response.json()) as CarType[]
+    return Promise.resolve(cars as CarType[])
 }
 
 // Hooks

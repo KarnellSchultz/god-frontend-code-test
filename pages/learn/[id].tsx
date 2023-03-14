@@ -1,12 +1,12 @@
 import { Layout } from '../../src/components/layout'
-import { GetStaticPaths, GetStaticProps } from 'next/types'
+import { GetServerSideProps, GetStaticPaths } from 'next/types'
 import { getCars } from '../../src/utils'
 import {
     CarDetails,
     CarDetailsProps,
 } from '../../src/components/car-details/car-details'
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const { id } = ctx.params as { id: string }
     const carData = await getCars()
     const car = carData.find((c) => c.id === id)
@@ -18,16 +18,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
             id: car.id,
             imageUrl: car.imageUrl,
         },
-    }
-}
-
-export const getStaticPaths: GetStaticPaths = async () => {
-    const carData = await getCars()
-    return {
-        paths: carData.map((car) => ({
-            params: { id: car.id },
-        })),
-        fallback: true,
     }
 }
 
